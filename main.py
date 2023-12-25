@@ -16,11 +16,19 @@ def checkmatrix(array):
         if not (count >= 2 and count <= 4):
             return False
     return True
+
 def savegraph(resultmatrix):
+    letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+    random.shuffle(letters)
+    nums = []
+
     G = nx.Graph()
 
-    for i in range(1, len(resultmatrix)):
+    for i in range(len(resultmatrix)):
         G.add_node(i)
+        nums.append(i)
+
+    answer = dict(zip(nums, letters))
 
     for i in range(len(resultmatrix)):
         for j in range(i + 1, len(resultmatrix)):
@@ -28,8 +36,10 @@ def savegraph(resultmatrix):
                 G.add_edge(i, j)
 
     pos = nx.spring_layout(G)
-    nx.draw(G, pos, with_labels=True, font_weight='bold', font_size=12)
+    nx.draw(G, pos, with_labels=True, font_weight='bold', font_size=12, labels=answer)
     plt.savefig('graph.png')
+
+    return answer
 
 size = 8
 resultmatrix = generation(size)
@@ -37,4 +47,6 @@ while not checkmatrix(resultmatrix):
     resultmatrix = generation(size)
 
 print(resultmatrix)
+for i in resultmatrix:
+    print(i)
 print(savegraph(resultmatrix))
